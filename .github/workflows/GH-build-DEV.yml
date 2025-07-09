@@ -27,13 +27,12 @@ jobs:
     - name: Unit Tests
       run: dotnet test --no-build --verbosity normal
     - name: Send mail
-      uses: dawidd6/action-send-mail@v6
+      uses: dawidd6/action-send-mail@v3
       with:
-        server_address: ${{secrets.EMAIL_HOST}}
-        secure: false
-        server_port: ${{secrets.EMAIL_PORT}}
-        username: ${{secrets.EMAIL_LOGIN}}
-        password: ${{secrets.EMAIL_PASS}}
+        server_address: ${{ secrets.EMAIL_HOST }}
+        server_port: ${{ secrets.EMAIL_PORT }}
+        username: ${{ secrets.EMAIL_LOGIN }}
+        password: ${{ secrets.EMAIL_PASS }}
         subject: Pipeline executed successfully - ${{github.repository}}
         to: mvabel23@gmail.com
         from: Abel Montes Vega
