@@ -30,17 +30,10 @@ jobs:
       uses: dawidd6/action-send-mail@v6
       with:
         server_address: ${{secrets.EMAIL_HOST}}
-        # Server port, default 25:
         server_port: ${{secrets.EMAIL_PORT}}
-        # Optional (recommended) mail server username:
         username: ${{secrets.EMAIL_LOGIN}}
-        # Optional (recommended) mail server password:
         password: ${{secrets.MAIL_PASS}}
-        # Required mail subject:
         subject: Pipeline executed successfully - ${{github.repository}}
-        # Required recipients' addresses:
         to: mvabel23@gmail.com
-        # Required sender full name (address can be skipped):
-        from: Abel Montes Vega # <user@example.com>
-        # Optional plain body:
+        from: Abel Montes Vega
         body: Build job of ${{github.repository}} completed successfully!
