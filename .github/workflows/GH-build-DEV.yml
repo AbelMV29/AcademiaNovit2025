@@ -26,8 +26,8 @@ jobs:
       run: dotnet build --no-restore
     - name: Unit Tests
       run: dotnet test --no-build --verbosity normal
-    - name: Send mail
-      uses: dawidd6/action-send-mail@v3
+    - name: Send email
+      uses: dawidd6/action-send-mail@v6
       with:
         server_address: ${{ secrets.EMAIL_HOST }}
         server_port: ${{ secrets.EMAIL_PORT }}
