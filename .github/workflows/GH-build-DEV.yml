@@ -32,7 +32,7 @@ jobs:
         server_address: ${{secrets.EMAIL_HOST}}
         server_port: ${{secrets.EMAIL_PORT}}
         username: ${{secrets.EMAIL_LOGIN}}
-        password: ${{secrets.MAIL_PASS}}
+        password: ${{secrets.EMAIL_PASS}}
         subject: Pipeline executed successfully - ${{github.repository}}
         to: mvabel23@gmail.com
         from: Abel Montes Vega
