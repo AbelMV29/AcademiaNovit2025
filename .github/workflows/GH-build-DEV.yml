@@ -33,4 +33,8 @@ jobs:
           key: ${{ secrets.VM_PRIVATE_KEY }}
           port: ${{ secrets.VM_PORT }}
           script: |
-            pwd
+            git clone https://github.com/AbelMV29/AcademiaNovit2025
+            cd AcademiaNovit2025
+            dotnet restore
+            dotnet build
+            dotnet test
