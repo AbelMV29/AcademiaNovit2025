@@ -33,8 +33,19 @@ jobs:
           key: ${{ secrets.VM_PRIVATE_KEY }}
           port: ${{ secrets.VM_PORT }}
           script: |
-            git clone https://github.com/AbelMV29/AcademiaNovit2025
-            cd AcademiaNovit2025
+            echo Verificando existencia del repositorio en local
+            if [ -d "AcademiaNovit2025" ]; then
+              echo Repositorio en local ya existente.
+              echo Realizando pull a ultimos cambios.
+              cd AcademiaNovit2025
+              git reset --hard
+              git pull origin main
+            else
+              echo Repositorio no encontrado.
+              echo Clonando repositorio.
+              git clone https://github.com/AbelMV29/AcademiaNovit2025
+              cd AcademiaNovit2025
+            fi
             dotnet restore
             dotnet build
             dotnet test
