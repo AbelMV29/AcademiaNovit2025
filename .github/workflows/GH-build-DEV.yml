@@ -49,4 +49,4 @@ jobs:
             dotnet restore
             dotnet build
             dotnet test
-            dotnet publish -C Release -O publish/
+            dotnet publish -c Release -o publish/
