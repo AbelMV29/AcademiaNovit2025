@@ -1,0 +1,52 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: GH-build-DEV
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Send email
+      uses: dawidd6/action-send-mail@v6
+      with:
+        server_address: ${{ secrets.EMAIL_HOST }}
+        server_port: ${{ secrets.EMAIL_PORT }}
+        username: ${{ secrets.EMAIL_LOGIN }}
+        password: ${{ secrets.EMAIL_PASS }}
+        subject: Pipeline executed successfully - ${{github.repository}}
+        to: mvabel23@gmail.com
+        from: Abel Montes Vega
+        body: Build job of ${{github.repository}} completed successfully!
+    - name: Connect to my VM
+      uses: appleboy/ssh-action@v1
+      with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USERNAME}}
+          key: ${{ secrets.VM_PRIVATE_KEY }}
+          port: ${{ secrets.VM_PORT }}
+          script: |
+            echo Verificando existencia del repositorio en local
+            if [ -d "AcademiaNovit2025" ]; then
+              echo Repositorio en local ya existente.
+              echo Realizando pull a ultimos cambios.
+              cd AcademiaNovit2025
+              git reset --hard
+              git pull origin main
+            else
+              echo Repositorio no encontrado.
+              echo Clonando repositorio.
+              git clone https://github.com/AbelMV29/AcademiaNovit2025
+              cd AcademiaNovit2025
+            fi
+            dotnet restore
+            dotnet build
+            dotnet test
+            dotnet publish -c Release -o publish/
