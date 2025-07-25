@@ -16,14 +16,28 @@ builder.Host.UseSerilog((context, loggerConfiguration) => loggerConfiguration
 
 # endregion
 
-#region leer variables de entorno
+#region leer variables de entorno y secrets
 
 builder.Configuration.AddEnvironmentVariables();
 
+string connectionString;
+
+var secretFilePath = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING_FILE");
+
+if (!string.IsNullOrEmpty(secretFilePath) && File.Exists(secretFilePath))
+{
+    connectionString = File.ReadAllText(secretFilePath).Trim();
+    Console.WriteLine($"Connection string loaded from Docker secret: {secretFilePath}");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    Console.WriteLine("Connection string loaded from appsettings.json (local development)");
+}
+
 #endregion
 
-string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 

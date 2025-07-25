@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  app:
+    image: ghcr.io/abelmv29/dotnet-api:latest
+    ports:
+      - "5000:5000"
+    networks:
+      - app
+    secrets:
+      - db_connection_string
+    environment:
+      DB_CONNECTION_STRING_FILE: /run/secrets/db_connection_string
+
+  postgres:
+    image: postgres:17.5
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: tivon1234
+      PGDATA: /data/postgres
+    networks:
+      - app
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/data/postgres
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - app
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+secrets:
+  db_connection_string:
+    file: ./secrets/db_connection_string.txt
+
+networks:
+  app:
+    driver: bridge    
+
+volumes:
+  pgadmin_data:
+  postgres_data:
+
