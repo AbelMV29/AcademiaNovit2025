@@ -18,6 +18,8 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: tivon1234
       PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
     networks:
       - app
     restart: unless-stopped
