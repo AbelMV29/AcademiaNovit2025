@@ -17,6 +17,6 @@ jobs:
     - name: Build Docker image
       run: docker build -t ghcr.io/abelmv29/dotnet-api:latest .
     - name: Sign in GitHub Registry
-      run: echo ${ secrets.ACCESS_TOKEN_GH } | docker login ghcr.io -u abelmv29 --password-stdin
+      run: echo ${{ secrets.ACCESS_TOKEN_GH }} | docker login ghcr.io -u abelmv29 --password-stdin
     - name: Push images to GitHub Registry
       run: docker push ghcr.io/abelmv29/dotnet-api:latest
